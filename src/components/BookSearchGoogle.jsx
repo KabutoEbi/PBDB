@@ -15,7 +15,6 @@ function BookSearchGoogle({ onSelect, onClose, mode }) {
     let q = ''
     if (mode === 'title') q = `intitle:${query}`
     else if (mode === 'author') q = `inauthor:${query}`
-    else if (mode === 'isbn') q = `isbn:${query}`
     else q = query
     try {
       const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}`)
@@ -41,7 +40,7 @@ function BookSearchGoogle({ onSelect, onClose, mode }) {
         <input
           type="text"
           className="flex-1 py-2 px-3 border border-gray-300 rounded text-sm focus:outline-none focus:border-blue-500"
-          placeholder={mode === 'title' ? 'タイトルで検索' : mode === 'author' ? '著者名で検索' : 'ISBNで検索'}
+          placeholder={mode === 'title' ? 'タイトルで検索' : '著者名で検索'}
           value={query}
           onChange={e => setQuery(e.target.value)}
         />
