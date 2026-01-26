@@ -154,6 +154,8 @@ function App() {
                     // File型ならStorageにアップロード
                     const storageRef = ref(storage, `covers/${user.uid}_${Date.now()}`);
                     await uploadBytes(storageRef, bookData.cover);
+                   // Google APIキーは.envで管理し、VITE_GOOGLE_API_KEYとして参照
+                   const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
                     const coverUrl = await getDownloadURL(storageRef);
                     bookToSave.cover = coverUrl;
                     coverStoragePath = storageRef.fullPath; // ←これを追加
