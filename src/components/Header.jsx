@@ -1,6 +1,6 @@
-import { Plus } from 'lucide-react'
+import { Plus, LogOut } from 'lucide-react'
 
-function Header({ onAddBookClick }) {
+function Header({ onAddBookClick, onLogout }) {
   return (
     <header className="bg-blue-500 border-b px-6 py-3 mb-6 w-full">
       <div className="w-full flex items-center">
@@ -11,6 +11,13 @@ function Header({ onAddBookClick }) {
         >
           <Plus size={18} className="inline-block" />
           本を追加
+        </button>
+        <button
+          className="bg-white text-red-500 border border-red-400 py-2 px-4 rounded text-sm font-medium cursor-pointer hover:bg-red-50 flex items-center gap-2 ml-2"
+          onClick={onLogout}
+        >
+          <LogOut size={16} className="inline-block" />
+          ログアウト
         </button>
       </div>
     </header>

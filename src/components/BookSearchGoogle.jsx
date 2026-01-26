@@ -72,8 +72,7 @@ function BookSearchGoogle({ onSelect, onClose, mode }) {
                   status: 'want',
                   date: '',
                   rating: '3',
-                  comment: '',
-                  isbn: info.industryIdentifiers?.find(id => id.type === 'ISBN_13')?.identifier || ''
+                  comment: ''
                 })
               }}>この本を追加</button>
             </div>
