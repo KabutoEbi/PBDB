@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function EditBook({ book, onClose, onSave }) {
+function EditBook({ book, onClose, onSave, onDelete }) {
   const [formData, setFormData] = useState({
     title: '',
     author: '',
@@ -229,6 +229,20 @@ function EditBook({ book, onClose, onSave }) {
           {onClose && (
             <button type="button" className="py-2 px-5 rounded text-sm font-medium cursor-pointer border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 max-md:w-full" onClick={onClose}>
               キャンセル
+            </button>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              className="py-2 px-5 rounded text-sm font-medium cursor-pointer border-none bg-red-500 text-white hover:bg-red-600 max-md:w-full"
+              onClick={() => {
+                if (window.confirm('本当に削除しますか？')) {
+                  onDelete(book.id)
+                  if (onClose) onClose()
+                }
+              }}
+            >
+              削除
             </button>
           )}
           <button type="submit" className="py-2 px-5 rounded text-sm font-medium cursor-pointer border-none bg-blue-500 text-white hover:bg-blue-600 max-md:w-full">

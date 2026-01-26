@@ -5,7 +5,7 @@ import EditBook from './EditBook'
 
 
 
-function BookList({ books, setBooks, setEditBook, setSelectedBook }) {
+function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit }) {
     const [filter, setFilter] = useState('all')
     const [sortBy, setSortBy] = useState('title')
 
@@ -105,13 +105,9 @@ function BookList({ books, setBooks, setEditBook, setSelectedBook }) {
                 ) : sortedBooks.map(book => (
                     <div
                         key={book.id || Math.random()}
-                        className="bg-white p-4 rounded border border-gray-300 cursor-pointer flex items-center gap-4 hover:bg-gray-50 max-md:flex-col max-md:items-start max-md:gap-3"
-                        onClick={() => {
-                            if (book) setSelectedBook(book)
-                        }}
+                        className="bg-white p-4 rounded border border-gray-300 flex items-center gap-4 hover:bg-gray-50 max-md:flex-col max-md:items-start max-md:gap-3"
                     >
-                        {/* 表紙は一覧では表示しない */}
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 cursor-pointer" onClick={() => setSelectedBook(book)}>
                             <div className="mb-2">
                                 <span className={`inline-block py-1 px-2.5 rounded text-xs font-medium ${
                                     book.status === 'read' ? 'bg-blue-100 text-blue-800' :
@@ -146,6 +142,10 @@ function BookList({ books, setBooks, setEditBook, setSelectedBook }) {
                                     <span className="text-gray-900 text-base font-medium">{book.rating} ★</span>
                                 </div>
                             )}
+                        </div>
+                        <div className="flex flex-col gap-2 ml-4">
+                          <button className="text-xs text-blue-600 border border-blue-500 rounded px-2 py-1 hover:bg-blue-50" onClick={() => onEdit(book)} type="button">編集</button>
+                          <button className="text-xs text-red-600 border border-red-500 rounded px-2 py-1 hover:bg-red-50" onClick={() => onDelete(book.id)} type="button">削除</button>
                         </div>
                     </div>
                 ))}

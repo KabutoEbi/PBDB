@@ -1,15 +1,12 @@
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import Header from './components/Header'
-import Sidebar from './components/Sidebar'
 import BookList from './components/BookList'
 import BookDetail from './components/BookDetail'
 import EditBook from './components/EditBook'
 import AddBook from './components/AddBook'
 import ModeSelect from './components/ModeSelect'
 import BookSearchGoogle from './components/BookSearchGoogle'
-import ReadingActivity from './components/ReadingActivity'
-import Graph from './components/Graph'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -41,74 +38,10 @@ function App() {
   return (
     <>
       <Header onAddBookClick={() => { setShowAddBookModal(true); setAddBookMode(null); setAddBookPrefill(null); }} />
-      <div className="flex w-full pl-60 overflow-x-hidden max-md:pl-0">
-        <Sidebar currentPage={currentPage} onPageChange={setCurrentPage} />
-        <main className="flex-1 p-6 px-8 w-full max-w-[calc(100vw-240px)] box-border overflow-x-hidden max-md:max-w-full max-md:p-4">
+      <div className="flex w-full">
+        <main className="flex-1 p-4 w-full max-w-full box-border">
           {currentPage === 'home' && (
             <>
-              <div className="flex gap-6 mb-6 flex-wrap w-full box-border max-md:gap-3">
-                <div className="flex gap-1 bg-white border border-gray-300 rounded">
-                  <button
-                    className={`py-2 px-4 border-none cursor-pointer font-medium text-sm ${period === 'year'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-transparent text-gray-700 hover:bg-gray-100'
-                    }`}
-                    onClick={() => {
-                      setPeriod('year');
-                      setYear(thisYear);
-                    }}
-                  >
-                    年間
-                  </button>
-                  <button
-                    className={`py-2 px-4 border-none cursor-pointer font-medium text-sm ${period === 'month'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-transparent text-gray-700 hover:bg-gray-100'
-                    }`}
-                    onClick={() => {
-                      setPeriod('month');
-                      setYear(thisYear);
-                      setMonth(thisMonth);
-                    }}
-                  >
-                    月間
-                  </button>
-                </div>
-
-                <div className="flex gap-1 bg-white border border-gray-300 rounded">
-                  <button
-                    className={`py-2 px-4 border-none cursor-pointer font-medium text-sm ${status === 'all'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-transparent text-gray-700 hover:bg-gray-100'
-                    }`}
-                    onClick={() => setStatus('all')}
-                  >
-                    全部
-                  </button>
-                  <button
-                    className={`py-2 px-4 border-none cursor-pointer font-medium text-sm ${status === 'read'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-transparent text-gray-700 hover:bg-gray-100'
-                    }`}
-                    onClick={() => setStatus('read')}
-                  >
-                    読んだ
-                  </button>
-
-                  <button
-                    className={`py-2 px-4 border-none cursor-pointer font-medium text-sm ${status === 'want'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-transparent text-gray-700 hover:bg-gray-100'
-                    }`}
-                    onClick={() => setStatus('want')}
-                  >
-                    読みたい
-                  </button>
-                </div>
-              </div>
-
-
-
               <div className="grid grid-cols-3 gap-4 mb-6 w-full box-border max-md:grid-cols-1">
                 <div className="bg-white py-5 px-6 rounded border border-gray-300 w-full box-border">
                   <div className="text-gray-600 text-xs mb-2 font-medium">金額</div>
@@ -123,32 +56,19 @@ function App() {
                   <div className="text-gray-900 text-2xl font-semibold">{stats.bookCount}</div>
                 </div>
               </div>
-
-              <div className="bg-white p-6 rounded border border-gray-300 w-full box-border overflow-x-hidden mb-6">
-                <h2 className="mt-0 mb-4 text-gray-800 text-lg font-semibold">グラフ</h2>
-                <Graph
-                  books={books}
-                  period={period} setPeriod={setPeriod}
-                  status={status} setStatus={setStatus}
-                  year={year} setYear={setYear} yearList={yearList}
-                  month={month} setMonth={setMonth} monthList={monthList}
-                />
-              </div>
-
-              <div className="bg-white p-6 rounded border border-gray-300 w-full box-border overflow-x-hidden">
-                <ReadingActivity books={books} />
-              </div>
             </>
           )}
 
-          {currentPage === 'books' && (
+          <div className="mt-8">
             <BookList
               books={books}
-              setBooks={setBooks}
               setEditBook={setEditBook}
               setSelectedBook={setSelectedBook}
+              onDelete={id => {
+                setBooks(prev => prev.filter(b => b.id !== id))
+              }}
             />
-          )}
+          </div>
         </main>
       </div>
 
@@ -214,6 +134,10 @@ function App() {
               onClose={() => setEditBook(null)}
               onSave={(updatedBook) => {
                 setBooks(prev => prev.map(b => b.id === editBook.id ? { ...b, ...updatedBook } : b))
+                setEditBook(null)
+              }}
+              onDelete={id => {
+                setBooks(prev => prev.filter(b => b.id !== id))
                 setEditBook(null)
               }}
             />
