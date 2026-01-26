@@ -5,8 +5,7 @@ import EditBook from './EditBook'
 
 
 
-function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit }) {
-    const [filter, setFilter] = useState('all')
+function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit, filter, onFilterChange }) {
     const [sortBy, setSortBy] = useState('title')
 
     // フィルター処理
@@ -50,7 +49,7 @@ function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit }) {
                                 ? 'bg-blue-500 text-white' 
                                 : 'bg-transparent text-gray-700 hover:bg-gray-100'
                         }`}
-                        onClick={() => setFilter('all')}
+                        onClick={() => onFilterChange('all')}
                     >
                         全部
                     </button>
@@ -60,7 +59,7 @@ function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit }) {
                                 ? 'bg-blue-500 text-white' 
                                 : 'bg-transparent text-gray-700 hover:bg-gray-100'
                         }`}
-                        onClick={() => setFilter('read')}
+                        onClick={() => onFilterChange('read')}
                     >
                         読んだ
                     </button>
@@ -70,7 +69,7 @@ function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit }) {
                                 ? 'bg-blue-500 text-white' 
                                 : 'bg-transparent text-gray-700 hover:bg-gray-100'
                         }`}
-                        onClick={() => setFilter('reading')}
+                        onClick={() => onFilterChange('reading')}
                     >
                         読書中
                     </button>
@@ -80,7 +79,7 @@ function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit }) {
                                 ? 'bg-blue-500 text-white' 
                                 : 'bg-transparent text-gray-700 hover:bg-gray-100'
                         }`}
-                        onClick={() => setFilter('want')}
+                        onClick={() => onFilterChange('want')}
                     >
                         読みたい
                     </button>
@@ -143,10 +142,7 @@ function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit }) {
                                 </div>
                             )}
                         </div>
-                        <div className="flex flex-col gap-2 ml-4">
-                          <button className="text-xs text-blue-600 border border-blue-500 rounded px-2 py-1 hover:bg-blue-50" onClick={() => onEdit(book)} type="button">編集</button>
-                          <button className="text-xs text-red-600 border border-red-500 rounded px-2 py-1 hover:bg-red-50" onClick={() => onDelete(book.id)} type="button">削除</button>
-                        </div>
+                                                {/* 編集・削除ボタンは非表示 */}
                     </div>
                 ))}
             </div>

@@ -18,6 +18,7 @@ function App() {
   const [books, setBooks] = useState([])
   const [selectedBook, setSelectedBook] = useState(null)
   const [editBook, setEditBook] = useState(null)
+  const [bookFilter, setBookFilter] = useState('all')
 
   // 年・月選択用
   const now = new Date();
@@ -28,11 +29,13 @@ function App() {
   const yearList = Array.from({ length: 5 }, (_, i) => thisYear - i);
   const monthList = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  // 統計値をbooksから計算
+  // フィルタに応じたbooks
+  const filteredBooks = bookFilter === 'all' ? books : books.filter(b => b.status === bookFilter)
+  // 統計値をフィルタ後booksから計算
   const stats = {
-    totalAmount: books.reduce((sum, b) => sum + (b.price ? Number(b.price) : 0), 0),
-    totalPages: books.reduce((sum, b) => sum + (b.pages ? Number(b.pages) : 0), 0),
-    bookCount: books.length
+    totalAmount: filteredBooks.reduce((sum, b) => sum + (b.price ? Number(b.price) : 0), 0),
+    totalPages: filteredBooks.reduce((sum, b) => sum + (b.pages ? Number(b.pages) : 0), 0),
+    bookCount: filteredBooks.length
   }
 
   return (
@@ -67,6 +70,8 @@ function App() {
               onDelete={id => {
                 setBooks(prev => prev.filter(b => b.id !== id))
               }}
+              filter={bookFilter}
+              onFilterChange={setBookFilter}
             />
           </div>
         </main>
