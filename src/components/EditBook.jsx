@@ -35,11 +35,9 @@ function EditBook({ book, onClose, onSave, onDelete }) {
     const { name, value, type, files } = e.target
     if (name === 'cover' && type === 'file' && files && files[0]) {
       const file = files[0]
+      setFormData(prev => ({ ...prev, cover: file }))
       const reader = new FileReader()
-      reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, cover: reader.result }))
-        setCoverPreview(reader.result)
-      }
+      reader.onloadend = () => setCoverPreview(reader.result)
       reader.readAsDataURL(file)
     } else if (name === 'status') {
       // ステータス変更時、「読んだ」ならdateを当日にセット

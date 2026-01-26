@@ -25,11 +25,9 @@ function AddBook({ onClose, onAdd, initialData }) {
     const { name, value, type, files } = e.target
     if (name === 'cover' && type === 'file' && files && files[0]) {
       const file = files[0]
+      setFormData(prev => ({ ...prev, cover: file }))
       const reader = new FileReader()
-      reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, cover: reader.result }))
-        setCoverPreview(reader.result)
-      }
+      reader.onloadend = () => setCoverPreview(reader.result)
       reader.readAsDataURL(file)
     } else if (name === 'status') {
       // ステータス変更時、「読んだ」ならdateを当日にセット
@@ -60,13 +58,14 @@ function AddBook({ onClose, onAdd, initialData }) {
     }
 
     // データを親コンポーネントに渡す
+
+    // coverはFileのまま親に渡す
     const bookData = {
       ...formData,
       price: formData.price ? parseInt(formData.price) : 0,
       pages: formData.pages ? parseInt(formData.pages) : 0,
       date: formData.status === 'read' && formData.date ? formData.date : null
     }
-
     if (onAdd) {
       onAdd(bookData)
     }
@@ -111,8 +110,8 @@ function AddBook({ onClose, onAdd, initialData }) {
             onChange={handleChange}
             className="py-2 px-3 border border-gray-300 rounded text-sm focus:outline-none focus:border-blue-500"
           />
-          {formData.cover && (
-            <img src={formData.cover} alt="表紙プレビュー" className="mt-2 w-24 h-36 object-cover rounded border border-gray-200" />
+          {coverPreview && (
+            <img src={coverPreview} alt="表紙プレビュー" className="mt-2 w-24 h-36 object-cover rounded border border-gray-200" />
           )}
         </div>
 
