@@ -14,6 +14,7 @@ import BookSearchGoogle from './components/BookSearchGoogle'
 function App() {
   const [user, setUser] = useState(null)
   const ADMIN_EMAIL = 'narenohatehe@gmail.com'
+  const ADMIN_UID = 'XGzixiMgYsfKPM4QSdvXSkWFD0n2'
   const isAdmin = user && user.email === ADMIN_EMAIL
   
   useEffect(() => {
@@ -31,8 +32,8 @@ function App() {
     const unsub = onSnapshot(q, (snap) => {
       const allBooks = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       const filteredBooks = user 
-        ? allBooks.filter(b => b.uid === user.uid || b.uid === ADMIN_EMAIL)
-        : allBooks.filter(b => b.uid === ADMIN_EMAIL)
+        ? allBooks.filter(b => b.uid === user.uid || b.uid === ADMIN_UID)
+        : allBooks.filter(b => b.uid === ADMIN_UID)
       setBooks(filteredBooks)
     })
     return () => unsub()
@@ -55,7 +56,6 @@ function App() {
         isAdmin={isAdmin}
         onAddBookClick={() => { setShowAddBookModal(true); setAddBookMode(null); setAddBookPrefill(null); }}
         onLogout={() => signOut(auth)}
-        onLogin={() => {}}
       />
       <div className="flex w-full">
         <main className="flex-1 p-4 w-full max-w-full box-border">
@@ -149,7 +149,7 @@ function App() {
                   }
                   await addDoc(collection(db, 'books'), {
                     ...bookToSave,
-                    uid: ADMIN_EMAIL,
+                    uid: user.uid,
                     createdAt: new Date(),
                     ...(coverStoragePath ? { coverStoragePath } : {})
                   })
@@ -185,7 +185,7 @@ function App() {
                 if (!isAdmin) return
                 let coverUrl = updatedBook.cover
                 if (updatedBook.cover && updatedBook.cover instanceof File) {
-                  const storageRef = ref(storage, `covers/${ADMIN_EMAIL}_${Date.now()}`)
+                  const storageRef = ref(storage, `covers/${user.uid}_${Date.now()}`)
                   await uploadBytes(storageRef, updatedBook.cover)
                   coverUrl = await getDownloadURL(storageRef)
                 }
