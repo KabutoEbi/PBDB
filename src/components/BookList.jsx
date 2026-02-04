@@ -5,7 +5,7 @@ import EditBook from './EditBook'
 
 
 
-function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit, filter, onFilterChange }) {
+function BookList({ books, isAdmin, setEditBook, setSelectedBook, onDelete, onEdit, filter, onFilterChange }) {
     const [sortBy, setSortBy] = useState('title')
 
     // フィルター処理
@@ -142,7 +142,6 @@ function BookList({ books, setEditBook, setSelectedBook, onDelete, onEdit, filte
                                 </div>
                             )}
                         </div>
-                                                {/* 編集・削除ボタンは非表示 */}
                     </div>
                 ))}
             </div>

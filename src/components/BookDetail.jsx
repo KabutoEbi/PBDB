@@ -1,13 +1,14 @@
-import React from "react";
+import React from 'react'
 
-
-function BookDetail({ book, onClose, onEdit }) {
+function BookDetail({ book, isAdmin, onClose, onEdit }) {
   if (!book || typeof book !== 'object' || !book.title) return null;
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 bg-transparent flex justify-center items-center z-[1000] p-4" onClick={onClose}>
       <div className="bg-white rounded-xl border border-gray-300 p-7 w-full max-w-[420px] box-border relative shadow-lg" onClick={e => e.stopPropagation()}>
         <button className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl" onClick={onClose} aria-label="閉じる">✕</button>
-        <button className="absolute top-3 left-3 py-1 px-4 rounded text-sm font-medium cursor-pointer border-none bg-blue-500 text-white hover:bg-blue-600 shadow-sm" onClick={onEdit}>編集</button>
+        {isAdmin && (
+          <button className="absolute top-3 left-3 py-1 px-4 rounded text-sm font-medium cursor-pointer border-none bg-blue-500 text-white hover:bg-blue-600 shadow-sm" onClick={onEdit}>編集</button>
+        )}
         <div className="flex flex-col items-center gap-5">
           {book.cover ? (
             <img src={book.cover} alt={book.title} className="w-28 h-40 object-cover rounded border border-gray-200 shadow-sm" />
@@ -62,7 +63,6 @@ function BookDetail({ book, onClose, onEdit }) {
             </div>
           </div>
         </div>
-        {/* 編集ボタンは左上に移動済み */}
       </div>
     </div>
   );

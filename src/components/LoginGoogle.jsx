@@ -1,14 +1,23 @@
 import { useState } from 'react'
 import { auth, googleProvider } from '../firebase.js'
-import { signInWithPopup } from 'firebase/auth'
+import { signInWithPopup, signOut } from 'firebase/auth'
 
 function LoginGoogle() {
   const [error, setError] = useState('')
+  const ADMIN_EMAIL = 'narenohatehe@gmail.com'
 
   const handleLogin = async () => {
     setError('')
     try {
-      await signInWithPopup(auth, googleProvider)
+      const result = await signInWithPopup(auth, googleProvider)
+      const userEmail = result.user.email
+      
+      // 管理者のメールアドレス以外の場合はログアウトしてエラー表示
+      if (userEmail !== ADMIN_EMAIL) {
+        await signOut(auth)
+        setError('そのアカウントではログインできません')
+        return
+      }
     } catch (err) {
       setError('ログインに失敗しました')
     }

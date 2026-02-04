@@ -30,7 +30,6 @@ function AddBook({ onClose, onAdd, initialData }) {
       reader.onloadend = () => setCoverPreview(reader.result)
       reader.readAsDataURL(file)
     } else if (name === 'status') {
-      // ステータス変更時、「読んだ」ならdateを当日にセット
       if (value === 'read') {
         setFormData(prev => ({
           ...prev,
@@ -50,16 +49,11 @@ function AddBook({ onClose, onAdd, initialData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    
-    // バリデーション
     if (!formData.title || !formData.author) {
       alert('タイトルと著者は必須です')
       return
     }
 
-    // データを親コンポーネントに渡す
-
-    // coverはFileのまま親に渡す
     const bookData = {
       ...formData,
       price: formData.price ? parseInt(formData.price) : 0,
@@ -70,7 +64,6 @@ function AddBook({ onClose, onAdd, initialData }) {
       onAdd(bookData)
     }
 
-    // フォームをリセット
     setFormData({
       title: '',
       author: '',

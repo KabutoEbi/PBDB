@@ -40,7 +40,6 @@ function EditBook({ book, onClose, onSave, onDelete }) {
       reader.onloadend = () => setCoverPreview(reader.result)
       reader.readAsDataURL(file)
     } else if (name === 'status') {
-      // ステータス変更時、「読んだ」ならdateを当日にセット
       if (value === 'read') {
         setFormData(prev => ({
           ...prev,
